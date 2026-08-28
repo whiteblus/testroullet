@@ -1,9 +1,9 @@
-name: Deploy Roulette
+name: Deploy to GitHub Pages
 
 on:
-  workflow_dispatch:
   push:
     branches: ["main"]
+  workflow_dispatch:
 
 permissions:
   contents: read
@@ -22,7 +22,6 @@ jobs:
         uses: actions/checkout@v4
         with:
           submodules: recursive
-          token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Setup Node
         uses: actions/setup-node@v4
@@ -30,10 +29,10 @@ jobs:
           node-version: "22"
 
       - name: Install dependencies
-        run: npm install
+        run: yarn --frozen-lockfile || npm install
 
       - name: Build
-        run: npx parcel build index.html --public-url /testroulet/
+        run: npx parcel build index.html --public-url ./
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
